@@ -1,15 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'service.dart';
+part of 'common_services.dart';
 
 // **************************************************************************
 // ShelfRouterGenerator
 // **************************************************************************
 
-Router _$BaseServiceRouter(BaseService service) {
+Router _$CommonServicesRouter(CommonServices service) {
   final router = Router();
-  router.mount(r'/auth/', service._auth);
-  router.mount(r'/app/', service._app);
-  router.mount(r'/common/', service._common);
+  router.add('POST', r'/avatar', service.uploadAvatar);
+  router.add('GET', r'/avatar/<name>', service.avatar);
   return router;
 }

@@ -38,6 +38,14 @@ class ApkMid {
     }).toList();
   }
 
+  static Future<bool> checkApp(String name) async {
+    return (await DB.connection.query(
+      'select * from app_t where name = @name',
+      substitutionValues: {'name': name},
+    ))
+        .isNotEmpty;
+  }
+
   static Future addApp(String name) async {
     await PostgresHelper.insert('app_t', {
       'uuid': Uuid().v4(),
@@ -57,6 +65,14 @@ class ApkMid {
         .toList();
   }
 
+  static Future<bool> checkAppById(String uuid) async {
+    return (await DB.connection.query(
+      'select * from app_t where uuid = @uuid',
+      substitutionValues: {'uuid': uuid},
+    ))
+        .isNotEmpty;
+  }
+
   static Future addChannel(String name, String uuid) async {
     await PostgresHelper.insert('app_channel_t', {
       'id': Uuid().v4(),
@@ -69,6 +85,25 @@ class ApkMid {
     var result = await DB.connection.query(
       'select * from app_channel_t where uuid=@uuid',
       substitutionValues: {'uuid': uuid},
+    );
+    return result.isNotEmpty;
+  }
+
+  static Future<List> getChannels() async {
+    var result = await DB.connection.query('select * from app_channel_t');
+    return result
+        .map((e) => {
+              'uuid': e[0],
+              'name': e[1],
+              'app_id': e[2],
+            })
+        .toList();
+  }
+
+  static Future<bool> checkChannelByName(String name) async {
+    var result = await DB.connection.query(
+      'select * from app_channel_t where name=@name',
+      substitutionValues: {'name': name},
     );
     return result.isNotEmpty;
   }
